@@ -1,4 +1,4 @@
-FROM espa/external:latest
+FROM 552819999234.dkr.ecr.us-east-1.amazonaws.com/espa/external:latest
 ENV PREFIX=/usr/local \
     SRC_DIR=/usr/local/src \
     ESPAINC=/usr/local/include \
@@ -23,14 +23,16 @@ RUN REPO_NAME=espa-product-formatter \
 
 RUN REPO_NAME=espa-surface-reflectance \
     && cd $SRC_DIR \
-    && git clone https://github.com/USGS-EROS/${REPO_NAME}.git \
-    && cd /usr/local/src/espa-surface-reflectance/lasrc/c_version/src \
+    && git clone https://github.com/developmentseed/${REPO_NAME}.git \
+    && cd /usr/local/src/espa-surface-reflectance/lasrc/c_version \
     && make BUILD_STATIC=yes ENABLE_THREADING=yes \
     && make install \
     && make clean \ 
-    # && cd /usr/local/src/espa-surface-reflectance/lasrc/landsat_aux/src \
-    # && make BUILD_STATIC=yes ENABLE_THREADING=yes \
-    # && make install \
-    # && make clean \ 
+    && cd /usr/local/src/espa-surface-reflectance/lasrc/landsat_aux \
+    && make BUILD_STATIC=yes ENABLE_THREADING=yes \
+    && make install \
+    && make clean \ 
     && cd $SRC_DIR \
     && rm -rf ${REPO_NAME}
+
+CMD ["/usr/local/bin/updatelads.py","--today"]
