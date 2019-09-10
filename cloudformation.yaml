@@ -404,8 +404,6 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: 'lasrcaux'
-      Cpu: '512'
-      Memory: '512'
       # NetworkMode: awsvpc
       RequiresCompatibilities:
         - EC2
@@ -424,8 +422,9 @@ Resources:
             Scope: shared
       ContainerDefinitions:
         - Name: 'lasrcaux'
-          #Cpu: 1024
-          #Memory: 2048
+          # Cpu: 1024
+          # Memory: 2048
+          MemoryReservation: 2048
           Image: '552819999234.dkr.ecr.us-east-1.amazonaws.com/mounttest'
           MountPoints:
             - SourceVolume: 'lasrcaux'
@@ -441,8 +440,6 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: 'lasrc'
-      Cpu: '512'
-      Memory: '512'
       # NetworkMode: awsvpc
       RequiresCompatibilities:
         - EC2
@@ -461,12 +458,16 @@ Resources:
             Scope: shared
       ContainerDefinitions:
         - Name: 'lasrc'
-          #Cpu: 1024
-          #Memory: 2048
+          # Cpu: 1024
+          # Memory: 2048
+          MemoryReservation: 2048
           Image: '552819999234.dkr.ecr.us-east-1.amazonaws.com/lasrc'
           MountPoints:
             - SourceVolume: 'lasrcaux'
               ContainerPath: '/var/lasrc_aux'
+          Environment:
+            - Name: L8_AUX_DIR
+              Value: '/var/lasrc_aux'
           LogConfiguration:
             LogDriver: awslogs
             Options:
