@@ -8,8 +8,8 @@ ENV PREFIX=/usr/local \
 # RUN cd $SRC_DIR \
 	# && wget http://edclpdsftp.cr.usgs.gov/downloads/auxiliaries/lasrc_auxiliary/lasrc_aux.2013-2017.tar.gz \
 	# && tar -xvzf lasrc_auxiliary.2013-2017.tar.gz
-
-
+COPY lasrc_landsat_granule.sh ./usr/local/lasrc_landsat_granule.sh 
+RUN pip install gsutil
 RUN REPO_NAME=espa-product-formatter \
     && REPO_TAG=product_formatter_v1.16.1 \
     && cd $SRC_DIR \
@@ -35,4 +35,6 @@ RUN REPO_NAME=espa-surface-reflectance \
     && cd $SRC_DIR \
     && rm -rf ${REPO_NAME}
 
-CMD ["/usr/local/bin/updatelads.py","--today"]
+ENTRYPOINT ["/bin/sh", "-c"]
+# CMD ["/usr/local/bin/updatelads.py","--today"]
+CMD ["/usr/local/lasrc_landsat_granule.sh"]
