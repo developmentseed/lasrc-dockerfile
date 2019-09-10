@@ -8,7 +8,8 @@ ENV PREFIX=/usr/local \
 # RUN cd $SRC_DIR \
 	# && wget http://edclpdsftp.cr.usgs.gov/downloads/auxiliaries/lasrc_auxiliary/lasrc_aux.2013-2017.tar.gz \
 	# && tar -xvzf lasrc_auxiliary.2013-2017.tar.gz
-COPY lasrc_landsat_granule.sh ./usr/local/lasrc_landsat_granule.sh 
+
+COPY lasrc_landsat_granule.sh ./usr/local/lasrc_landsat_granule.sh
 RUN pip install gsutil
 RUN REPO_NAME=espa-product-formatter \
     && REPO_TAG=product_formatter_v1.16.1 \
@@ -24,14 +25,9 @@ RUN REPO_NAME=espa-product-formatter \
 RUN REPO_NAME=espa-surface-reflectance \
     && cd $SRC_DIR \
     && git clone https://github.com/developmentseed/${REPO_NAME}.git \
-    && cd /usr/local/src/espa-surface-reflectance/lasrc/c_version \
+    && cd ${REPO_NAME} \
     && make BUILD_STATIC=yes ENABLE_THREADING=yes \
     && make install \
-    && make clean \ 
-    && cd /usr/local/src/espa-surface-reflectance/lasrc/landsat_aux \
-    && make BUILD_STATIC=yes ENABLE_THREADING=yes \
-    && make install \
-    && make clean \ 
     && cd $SRC_DIR \
     && rm -rf ${REPO_NAME}
 
