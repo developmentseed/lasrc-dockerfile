@@ -10,27 +10,45 @@ ENV PREFIX=/usr/local \
 	# && tar -xvzf lasrc_auxiliary.2013-2017.tar.gz
 
 COPY lasrc_landsat_granule.sh ./usr/local/lasrc_landsat_granule.sh
+COPY lasrc_sentinel_granule.sh ./usr/local/lasrc_sentinel_granule.sh
 RUN pip install gsutil
 RUN REPO_NAME=espa-product-formatter \
-    && REPO_TAG=product_formatter_v1.16.1 \
-    && cd $SRC_DIR \
-    && git clone https://github.com/USGS-EROS/${REPO_NAME}.git ${REPO_NAME} \
-    && cd ${REPO_NAME} \
-    && git checkout ${REPO_TAG} \
-    && make BUILD_STATIC=yes ENABLE_THREADING=yes \
-    && make install \
-    && cd $SRC_DIR \
-    && rm -rf ${REPO_NAME}
+		# && REPO_TAG=product_formatter_v1.16.1 \
+		&& cd $SRC_DIR \
+		&& git clone https://github.com/USGS-EROS/${REPO_NAME}.git ${REPO_NAME} \
+		&& cd ${REPO_NAME} \
+		# && git checkout ${REPO_TAG} \
+		&& make BUILD_STATIC=yes ENABLE_THREADING=yes \
+		&& make install \
+		&& cd $SRC_DIR \
+		&& rm -rf ${REPO_NAME}
 
 RUN REPO_NAME=espa-surface-reflectance \
-    && cd $SRC_DIR \
-    && git clone https://github.com/developmentseed/${REPO_NAME}.git \
+		&& cd $SRC_DIR \
+		&& git clone https://github.com/developmentseed/${REPO_NAME}.git \
+		&& cd ${REPO_NAME} \
+		&& make BUILD_STATIC=yes ENABLE_THREADING=yes \
+		&& make install \
+		&& cd $SRC_DIR \
+		&& rm -rf ${REPO_NAME}
+
+# Compile and install OpenJPEG
+RUN yum install -y cmake
+RUN REPO_NAME=openjpeg \
+    && REPO_TAG=v2.3.1 \
+		&& cd $SRC_DIR \
+    && git clone https://github.com/uclouvain/${REPO_NAME}.git ${REPO_NAME} \
     && cd ${REPO_NAME} \
-    && make BUILD_STATIC=yes ENABLE_THREADING=yes \
-    && make install \
+    && git checkout ${REPO_TAG} \
+		&& mkdir build \
+		&& cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=Release \
+    && make \
+		&& make install \
+		&& make clean \
     && cd $SRC_DIR \
     && rm -rf ${REPO_NAME}
 
 ENTRYPOINT ["/bin/sh", "-c"]
 # CMD ["/usr/local/bin/updatelads.py","--today"]
-CMD ["/usr/local/lasrc_landsat_granule.sh"]
+CMD ["/usr/local/lasrc_sentinel_granule.sh"]

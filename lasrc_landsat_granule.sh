@@ -20,5 +20,5 @@ mtl=${id}_MTL.txt
 # Convert to espa format
 convert_lpgs_to_espa --mtl "$mtl"
 # Run lasrc
-do_lasrc.py --xml "${id}.xml"
+do_lasrc_l8.py --xml "${id}.xml"
 ls
