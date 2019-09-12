@@ -466,7 +466,7 @@ Resources:
             - SourceVolume: 'lasrcaux'
               ContainerPath: '/var/lasrc_aux'
           Environment:
-            - Name: L8_AUX_DIR
+            - Name: LASRC_AUX_DIR
               Value: '/var/lasrc_aux'
           LogConfiguration:
             LogDriver: awslogs
