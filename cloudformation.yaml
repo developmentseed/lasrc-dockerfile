@@ -425,7 +425,7 @@ Resources:
           # Cpu: 1024
           # Memory: 2048
           MemoryReservation: 2048
-          Image: '552819999234.dkr.ecr.us-east-1.amazonaws.com/mounttest'
+          Image: '552819999234.dkr.ecr.us-east-1.amazonaws.com/lasrc_aux'
           MountPoints:
             - SourceVolume: 'lasrcaux'
               ContainerPath: '/var/lasrc_aux'
