@@ -484,6 +484,11 @@ Outputs:
     Value: !Ref 'ECSCluster'
     Export:
       Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ClusterName' ] ]
+  LaSRCTaskDefinitionArn:
+    Description: The arn of the lasrc task
+    Value: !Ref 'LaSRCTaskDefinition'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'LaSRCTaskDefinitionArn' ] ]
   ExternalUrl:
     Description: The url of the external load balancer
     Value: !Join ['', ['http://', !GetAtt 'PublicLoadBalancer.DNSName']]

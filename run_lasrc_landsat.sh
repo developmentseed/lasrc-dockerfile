@@ -1,11 +1,19 @@
 #!/bin/bash
-stack=lasrc
+stack=$1
 cluster=$(aws cloudformation describe-stacks --stack-name "$stack" \
 --query "Stacks[0].Outputs[?OutputKey=='ClusterName'].OutputValue" --output text)
-echo "$cluster"
-task=arn:aws:ecs:us-east-1:552819999234:task-definition/lasrc:3
-granuletype=LANDSAT_SCENE_ID
-granuleid=LC08_L1TP_027039_20190901_20190901_01_RT
+task=$(aws cloudformation describe-stacks --stack-name "$stack" \
+--query "Stacks[0].Outputs[?OutputKey=='LaSRCTaskDefinitionArn'].OutputValue" --output text)
+if [ $2 == "landsat" ]
+then
+  granuletype=LANDSAT_SCENE_ID
+fi
+if [ $2 == "sentinel" ]
+then
+  granuletype=SENTINEL_SCENE_ID
+fi
+# granuleid=LC08_L1TP_027039_20190901_20190901_01_RT
+granuleid=$3
 command=/usr/local/lasrc_landsat_granule.sh
 overrides=$(cat <<EOF 
 {
@@ -31,3 +39,4 @@ EOF
 echo "$overrides" > ./overrides.json
 aws ecs run-task --overrides file://overrides.json --task-definition "$task" \
   --cluster "$cluster" 
+rm ./overrides.json
