@@ -5,10 +5,6 @@ ENV PREFIX=/usr/local \
     ESPALIB=/usr/local/lib \
 		L8_AUX_DIR=/usr/local/src
 
-# RUN cd $SRC_DIR \
-	# && wget http://edclpdsftp.cr.usgs.gov/downloads/auxiliaries/lasrc_auxiliary/lasrc_aux.2013-2017.tar.gz \
-	# && tar -xvzf lasrc_auxiliary.2013-2017.tar.gz
-
 RUN REPO_NAME=espa-product-formatter \
 		# && REPO_TAG=product_formatter_v1.16.1 \
 		&& cd $SRC_DIR \
@@ -29,9 +25,9 @@ RUN REPO_NAME=espa-surface-reflectance \
 		&& cd $SRC_DIR \
 		&& rm -rf ${REPO_NAME}
 
+RUN pip install gsutil
 COPY lasrc_landsat_granule.sh ./usr/local/lasrc_landsat_granule.sh
 COPY lasrc_sentinel_granule.sh ./usr/local/lasrc_sentinel_granule.sh
-RUN pip install gsutil
 
 ENTRYPOINT ["/bin/sh", "-c"]
 # CMD ["/usr/local/bin/updatelads.py","--today"]
