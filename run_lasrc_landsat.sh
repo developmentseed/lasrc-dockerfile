@@ -7,14 +7,15 @@ task=$(aws cloudformation describe-stacks --stack-name "$stack" \
 if [ $2 == "landsat" ]
 then
   granuletype=LANDSAT_SCENE_ID
+  command=/usr/local/lasrc_landsat_granule.sh
 fi
 if [ $2 == "sentinel" ]
 then
   granuletype=SENTINEL_SCENE_ID
+  command=/usr/local/lasrc_sentinel_granule.sh
 fi
 # granuleid=LC08_L1TP_027039_20190901_20190901_01_RT
 granuleid=$3
-command=/usr/local/lasrc_landsat_granule.sh
 overrides=$(cat <<EOF 
 {
   "containerOverrides": [
