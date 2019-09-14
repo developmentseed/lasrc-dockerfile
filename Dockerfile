@@ -22,6 +22,7 @@ RUN REPO_NAME=espa-surface-reflectance \
 		&& cd ${REPO_NAME} \
 		&& make BUILD_STATIC=yes ENABLE_THREADING=yes \
 		&& make install \
+		&& make install-lasrc-aux \
 		&& cd $SRC_DIR \
 		&& rm -rf ${REPO_NAME}
 
