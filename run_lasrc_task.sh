@@ -16,7 +16,7 @@ then
 fi
 # granuleid=LC08_L1TP_027039_20190901_20190901_01_RT
 granuleid=$3
-overrides=$(cat <<EOF 
+overrides=$(cat <<EOF
 {
   "containerOverrides": [
     {
@@ -27,7 +27,7 @@ overrides=$(cat <<EOF
           "name": "$granuletype",
           "value": "$granuleid"
         },
-        { 
+        {
           "name": "LASRC_AUX_DIR",
           "value": "/var/lasrc_aux"
         }
@@ -39,5 +39,5 @@ EOF
 )
 echo "$overrides" > ./overrides.json
 aws ecs run-task --overrides file://overrides.json --task-definition "$task" \
-  --cluster "$cluster" 
+  --cluster "$cluster"
 rm ./overrides.json
