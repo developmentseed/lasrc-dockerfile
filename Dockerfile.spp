@@ -1,0 +1,26 @@
+FROM 552819999234.dkr.ecr.us-east-1.amazonaws.com/espa/external:latest
+ENV PREFIX=/usr/local \
+    SRC_DIR=/usr/local/src \
+    ESPAINC=/usr/local/include \
+    ESPALIB=/usr/local/lib \
+		L8_AUX_DIR=/usr/local/src \
+    HDF_VER=4.2.5
+
+COPY S2/ppS10/consolidate/ /usr/local/S2/ppS10/consolidate
+RUN mkdir -p /shared/lib && cd /shared/lib && \
+  wget https://support.hdfgroup.org/ftp/HDF/releases/HDF$HDF_VER/bin/linux-x86_64/hdf-$HDF_VER-linux-x86_64.tar.gz && \
+  mkdir hdf-$HDF_VER && \
+  tar -xvzf hdf-$HDF_VER-linux-x86_64.tar.gz -C hdf-$HDF_VER
+
+ENV HDF_PREFIX=/shared/lib/hdf-$HDF_VER
+
+RUN echo $HDF_PREFIX
+
+ENV HDFINC=$HDF_PREFIX/include \
+  HDFLIB=$HDF_PREFIX/lib \
+  HDFLINK="-lmfhdf -ldf -lproj -ljpeg -lz -lsz -lm"
+
+WORKDIR /usr/local/S2/ppS10/consolidate
+# RUN make clean && make link && make
+
+
