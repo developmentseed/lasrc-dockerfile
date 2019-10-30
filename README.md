@@ -8,9 +8,10 @@ After building the dependencies image, following the steps outlined [here](https
 
 After building your base dependencies image and pushing it to ECR you can build the `lasrc` processing image with
 ```shell
-$ docker build --tag lasrc .
+$ export STACKNAME=aimee # or whatever you want your stackname to be
+$ docker build --tag lasrc-$STACKNAME .
 ```
-You can then tag this `lasrc` image as `552819999234.dkr.ecr.us-east-1.amazonaws.com/lasrc` and push it to ECR.
+You can then tag this `lasrc` image as `552819999234.dkr.ecr.us-east-1.amazonaws.com/lasrc-<STACKNAME>` and push it to ECR.
 
 The `lasrc` processing code requires [auxiliary data](https://github.com/developmentseed/espa-surface-reflectance/tree/master/lasrc#downloads) to run.  To build the image contaning the scripts for downloading this data to a shared EFS mount point run
 ```shell

@@ -26,7 +26,7 @@ RUN REPO_NAME=espa-surface-reflectance \
 		&& cd $SRC_DIR \
 		&& rm -rf ${REPO_NAME}
 
-RUN pip install gsutil
+RUN pip install gsutil awscli
 COPY lasrc_landsat_granule.sh ./usr/local/lasrc_landsat_granule.sh
 COPY lasrc_sentinel_granule.sh ./usr/local/lasrc_sentinel_granule.sh
 

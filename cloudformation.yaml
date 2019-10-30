@@ -461,7 +461,7 @@ Resources:
           # Cpu: 1024
           # Memory: 2048
           MemoryReservation: 2048
-          Image: '552819999234.dkr.ecr.us-east-1.amazonaws.com/lasrc'
+          Image: !Sub '552819999234.dkr.ecr.us-east-1.amazonaws.com/lasrc-${AWS::StackName}'
           MountPoints:
             - SourceVolume: 'lasrcaux'
               ContainerPath: '/var/lasrc_aux'
